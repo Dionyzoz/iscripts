@@ -147,16 +147,16 @@ echo "Installing dotfiles..."
 # putgitrepo "$dotfilesrepo" "/home/$name"
 # Setup a bare git repository to manage the dotfiles
 git clone --bare --config status.showUntrackedFiles=no "$dotfilesrepo" "/home/$name/.local/share/dotfiles"
-dfg="/usr/bin/git --git-dir=/home/$name/.local/share/dotfiles --work-tree=/home/$name"
+alias dfg="/usr/bin/git --git-dir=/home/$name/.local/share/dotfiles --work-tree=/home/$name"
 # Setup all the files.
-"$dfg" checkout -f
+dfg checkout -f
 # Initialize the submodules, which has to be done like this in order for
 # the bare repository to be able to manage them.
-sudo "$dfg" submodule update --init --recursive
+sudo dfg submodule update --init --recursive
 # Delete files, but make git ignore the deletion. The files can simply
 # be restored with e.g. `dfg checkout README.md`.
 rm -f "/home/$name/README.md" "/home/$name/LICENSE"
-"$dfg" update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE"
+dfg update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE"
 
 # Make zsh the default shell for the user.
 sudo chsh -s /bin/zsh "$name" > /dev/null 2>&1
