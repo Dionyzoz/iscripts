@@ -36,16 +36,16 @@ getuserandpass() {
 	done
 
     echo "Enter a password for that user."
-    read pass1
+    read -s pass1
     echo "Retype password."
-    read pass2
+    read -s pass2
 
 	while ! [ "$pass1" = "$pass2" ]; do
 		unset pass2
         echo "Passwords do not match.\\n\\nEnter password again."
-        read pass1
+        read -s pass1
         echo "Retype password."
-        read pass2
+        read -s pass2
 	done
 }
 
@@ -56,6 +56,11 @@ adduserandpass() {
 	usermod -a -G wheel "$name" && mkdir -p /home/"$name" && chown "$name":wheel /home/"$name"
 	echo "$name:$pass1" | chpasswd
 	unset pass1
+}
+
+newperms() { # Set special sudoers settings for install (or after).
+	sed -i "/#ISCRIPTS/d" /etc/sudoers
+	echo "$* #ISCRIPTS" >> /etc/sudoers
 }
 
 installpkg() { pacman --noconfirm --needed -S "$1" > /dev/null 2>&1 ;}
@@ -156,5 +161,5 @@ sudo npm install -g typescript typescript-language-server
 # This line, overwriting the `newperms` command above will allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
 echo "Giving the user permissions"
-newperms "%wheel ALL=(ALL) ALL
+newperms "%wheel ALL=(ALL) ALL #ISCRIPTS
 %wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/systemctl suspend,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/packer -Syu,/usr/bin/packer -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/rc-service NetworkManager restart,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/paru,/usr/bin/pacman -Syyuw --noconfirm"
