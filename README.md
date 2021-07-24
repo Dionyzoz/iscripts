@@ -2,18 +2,17 @@
 
 > Special thanks to [LukeSmithxyz/LARBS](https://github.com/LukeSmithxyz/LARBS)
 
-Installation scripts for my Ubuntu installation.
+Installation scripts for my Arch Linux installation.
 
 ## Installation
-For the installation Ubuntu 20.10+ is needed, since the package polybar requirs that.
+For a full walkthrough of the installation of Arch Linux and the further installation and setup of all programs, see the `INSTALL.md` file.
+
+To install and execute the iscripts, run the following:
 ```bash
-git clone https://github.com/jorisperrenet/iscripts.git && cd iscripts
+git clone https://github.com/jorisperrenet/iscripts.git
+cd iscripts
 ./install.sh
 ```
 
-For a complete step-by-step process to set up everything, see the `INSTALL.md` file.
-
 ## Programs
 All programs listed in `progs.csv` are installed automatically through the `install.sh` script.
-
-Programs in `manual_install` are installed via a custom script in that directory.
