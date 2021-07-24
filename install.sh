@@ -128,16 +128,16 @@ echo "Installing dotfiles..."
 # putgitrepo "$dotfilesrepo" "/home/$name"
 # Setup a bare git repository to manage the dotfiles
 git clone --bare --config status.showUntrackedFiles=no "$dotfilesrepo" "/home/$name/.local/share/dotfiles"
-alias dfg="/usr/bin/git --git-dir=/home/$name/.local/share/dotfiles --work-tree=/home/$name"
+dfg="/usr/bin/git --git-dir=/home/$name/.local/share/dotfiles --work-tree=/home/$name"
 # Setup all the files.
-dfg checkout -f
+"$dfg" checkout -f
 # Initialize the submodules, which has to be done like this in order for
 # the bare repository to be able to manage them.
-dfg submodule update --init --recursive
+sudo "$dfg" submodule update --init --recursive
 # Delete files, but make git ignore the deletion. The files can simply
 # be restored with e.g. `dfg checkout README.md`.
 rm -f "/home/$name/README.md" "/home/$name/LICENSE"
-dfg update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE"
+"$dfg" update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE"
 
 # Make zsh the default shell for the user.
 sudo chsh -s /bin/zsh "$name" > /dev/null 2>&1
@@ -151,15 +151,20 @@ getwallpaper "/home/$name/wallpapers/landscape.jpg"
 echo "Installing nerdfont, a font"
 ./manual_install/nerd_font.sh >/dev/null 2>&1
 
+# Configuring the display manager
+echo "Configuring the display manager lightdm"
+systemctl enable lightdm
+sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
+
 echo "Installing language servers"
 # Python
-sudo npm install -g pyright
+sudo npm install -g pyright >/dev/null 2>&1
 # Typescript
-sudo npm install -g typescript typescript-language-server
+sudo npm install -g typescript typescript-language-server >/dev/null 2>&1
 
 
 # This line, overwriting the `newperms` command above will allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
-echo "Giving the user permissions"
+echo "Allowing the user to run important commands"
 newperms "%wheel ALL=(ALL) ALL #ISCRIPTS
 %wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/systemctl suspend,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/packer -Syu,/usr/bin/packer -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/rc-service NetworkManager restart,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/paru,/usr/bin/pacman -Syyuw --noconfirm"
