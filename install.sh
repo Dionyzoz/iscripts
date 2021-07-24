@@ -28,16 +28,24 @@ dotfilesrepo="https://github.com/jorisperrenet/dotfiles.git"
 
 getuserandpass() {
 	# Prompts user for new username an password.
-    name=$(echo "First, please enter a name for the user account."; read name)
+    echo "First, please enter a name for the user account."
+    read name
+
 	while ! echo "$name" | grep -q "^[a-z_][a-z0-9_-]*$"; do
         name=$(echo "Username not valid, please enter a valid name for the user account."; read name)
 	done
-    pass1=$(echo "Enter a password for that user."; read pass1)
-    pass2=$(echo "Retype password."; read pass2)
+
+    echo "Enter a password for that user."
+    read pass1
+    echo "Retype password."
+    read pass2
+
 	while ! [ "$pass1" = "$pass2" ]; do
 		unset pass2
-        pass1=$(echo "Passwords do not match.\\n\\nEnter password again."; read pass1)
-        pass2=$(echo "Retype password."; read pass2)
+        echo "Passwords do not match.\\n\\nEnter password again."
+        read pass1
+        echo "Retype password."
+        read pass2
 	done
 }
 
