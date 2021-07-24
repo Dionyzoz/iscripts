@@ -114,7 +114,16 @@ putgitrepo() { # Downloads a gitrepo $1 and places the files in $2 only overwrit
 }
 
 getwallpaper() {
-    curl -o $1 https://w.wallhaven.cc/full/8x/wallhaven-8x782y.jpg
+    curl -o "/home/$name/wallpapers/mountain.jpg" https://w.wallhaven.cc/full/8x/wallhaven-8x782y.jpg
+    curl -o "/home/$name/wallpapers/rocket.jpg" https://w.wallhaven.cc/full/8x/wallhaven-nzkozy.jpg
+}
+
+nerdfont() {
+    # install 3270 Nerd Font --> u can choose another at: https://www.nerdfonts.com/font-downloads
+    wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/3270.zip >/dev/null 2>&1
+    unzip 3270.zip -d ~/.fonts >/dev/null 2>&1
+    fc-cache -fv >/dev/null 2>&1
+    rm 3270.zip
 }
 
 ### THE ACTUAL SCRIPT ###
@@ -155,11 +164,11 @@ sudo -u "$name" mkdir -p "/home/$name/.cache/zsh/"
 
 # Get the wallpaper so that i3 can set it up.
 mkdir -p /home/$name/wallpapers/
-getwallpaper "/home/$name/wallpapers/landscape.jpg"
+getwallpaper
 
 # Run the manual install files
 echo "Installing nerdfont, a font"
-./manual_install/nerd_font.sh >/dev/null 2>&1
+nerdfont
 
 # Configuring the display manager
 echo "Configuring the display manager lightdm"
