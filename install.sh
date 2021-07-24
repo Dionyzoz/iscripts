@@ -66,8 +66,17 @@ newperms() { # Set special sudoers settings for install (or after).
 installpkg() { pacman --noconfirm --needed -S "$1" > /dev/null 2>&1 ;}
 
 maininstall() {
-    echo "Installing \`$1\` ($n of $total). $1 $2"
+    echo "Installing ($n of $total) \`$1\`, $2."
     installpkg "$1"
+}
+
+aurinstall() {
+	[ -f "/usr/bin/$1" ] || (echo "Installing ($n of $total) \`$1\` from the AUR, $2."
+    mkdir -p "/home/$name/installs"
+    cd "/home/$name/installs"
+    git clone "https://aur.archlinux.org/$1.git" >/dev/null 2>&1 &&
+    cd "$1" &&
+    sudo makepkg --noconfirm -si >/dev/null 2>&1)
 }
 
 progsinstallation() {
@@ -85,6 +94,7 @@ progsinstallation() {
         comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
 
         case "$tag" in
+            "A") aurinstall "$program" "$comment" ;;
             *) maininstall "$program" "$comment" ;;
         esac
     done < /tmp/progs.csv
@@ -153,7 +163,7 @@ echo "Installing nerdfont, a font"
 
 # Configuring the display manager
 echo "Configuring the display manager lightdm"
-systemctl enable lightdm
+sudo systemctl enable lightdm
 sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
 
 echo "Installing language servers"
