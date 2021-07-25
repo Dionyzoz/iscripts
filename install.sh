@@ -80,9 +80,9 @@ aurinstall() {
 }
 
 urlinstall() {
-    echo "Installing ($n of $total) \`$1\`, $(echo "$2" | cut -d'"' -f 2)."
-    url=$(echo "$2" | cut -d '"' -f 4)
-    directory=$(echo "$2" | cut -d '"' -f 6)
+    echo "Installing ($n of $total) \`$1\`, $(echo "$2" | cut -d'"' -f 1)."
+    url=$(echo "$2" | cut -d'"' -f 3)
+    directory=$(echo "$2" | cut -d'"' -f 4)
     mkdir -p "/home/$name/$directory"
     wget "$url" -O "/home/$name/$directory/$1" -c >/dev/null 2>&1
     unzip "/home/$name/$directory/$1" >/dev/null 2>&1
