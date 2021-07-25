@@ -27,7 +27,7 @@ exit
 # The command iwctl station <DEVICE> connect <SSID> would also work
 ```
 
-This is the point where you can use a script to do the rest, if you want this, look at the [Automated install](#automated-install) section. In the "Manual install" section the installation is described further.
+This is the point where you can use a script to do the rest, if you want this, look at the [automated install](#automated-install) section. In the [manual install](#manual-install) section the installation is described further.
 
 
 ## Manual install
@@ -35,7 +35,7 @@ To verify the boot mode, list the efivars directory:
 ```bash
 ls /sys/firmware/efi/efivars
 ```
-If this results in an error, you might want to consider an BIOS boot system instead of an UEFI system. To install this look at the *italic* words. At the end of this section look at the subsection "BIOS boot system" for the correct replacements.
+If this results in an error, you might want to consider an BIOS boot system instead of an UEFI system. To install this look at the *italic* words. At [BIOS boot system](#bios-boot-system) you can find the correct replacements.
 
 First for the system clock:
 ```bash
@@ -128,7 +128,7 @@ Exit chroot (the command is `exit`) and reboot (the command is `reboot`) you can
 You can now login with `root` and the password you set when running `passwd`.
 To connect to wi-fi use the GUI `nmtui`, but first run `systemctl start NetworkManager` and `systemctl enable NetworkManager`.
 
-After doing this you can install everything by running the iscripts. You can find this in the section "Installing with iscripts" below.
+After doing this you can install everything by running the iscripts. You can find this in the section [installing with iscripts](#installing-with-iscripts) below.
 
 
 ### BIOS boot system
