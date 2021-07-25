@@ -80,8 +80,9 @@ aurinstall() {
 }
 
 urlinstall() {
-    url=$(echo "$3" | cut -d '"' -f 2)
-    directory=$(echo "$3" | cut -d '"' -f 4)
+    echo "Installing ($n of $total) \`$1\`, $(echo "$2" | cut -d ='"' -f 2)."
+    url=$(echo "$2" | cut -d '"' -f 4)
+    directory=$(echo "$2" | cut -d '"' -f 6)
     mkdir -p "/home/$name/$directory"
     wget "$url" -O "/home/$name/$directory/$1" -c >/dev/null 2>&1
     unzip "/home/$name/$directory/$1" >/dev/null 2>&1
@@ -101,8 +102,8 @@ progsinstallation() {
         # Remove the "" from the comment.
         comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
 
-        case "$(echo $tag | head -c 1)" in
-            "U") urlinstall "$program" "$comment" "$tag" ;;
+        case "$tag" in
+            "U") urlinstall "$program" "$comment" ;;
             "A") aurinstall "$program" "$comment" ;;
             *) maininstall "$program" "$comment" ;;
         esac
