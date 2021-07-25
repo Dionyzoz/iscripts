@@ -80,7 +80,7 @@ aurinstall() {
 }
 
 urlinstall() {
-    echo "Installing ($n of $total) \`$1\`, $(echo "$2" | cut -d ='"' -f 2)."
+    echo "Installing ($n of $total) \`$1\`, $(echo "$2" | cut -d'"' -f 2)."
     url=$(echo "$2" | cut -d '"' -f 4)
     directory=$(echo "$2" | cut -d '"' -f 6)
     mkdir -p "/home/$name/$directory"
