@@ -79,6 +79,13 @@ aurinstall() {
     makepkg --noconfirm -si >/dev/null 2>&1)
 }
 
+urlinstall() {
+    url=$(echo "$3" | cut -d '"' -f 2)
+    directory=$(echo "$3" | cut -d '"' -f 4)
+    wget "$url" -o "$directory/$1.zip" -c >/dev/null 2>&1 &&
+    unzip "$directory/$1.zip" >/dev/null 2>&1
+}
+
 progsinstallation() {
     # Get the progsfile and delete the header.
     [ -f "$progsfile" ] && cat "$progsfile" | sed '/^#/d' > /tmp/progs.csv
@@ -93,7 +100,8 @@ progsinstallation() {
         # Remove the "" from the comment.
         comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
 
-        case "$tag" in
+        case "$(echo $tag | head -c 1)" in
+            "U") urlinstall "$program" "$comment" "$tag" ;;
             "A") aurinstall "$program" "$comment" ;;
             *) maininstall "$program" "$comment" ;;
         esac
@@ -103,15 +111,6 @@ progsinstallation() {
 getwallpaper() {
     curl -o "/home/$name/wallpapers/mountain.jpg" https://w.wallhaven.cc/full/8x/wallhaven-8x782y.jpg >/dev/null 2>&1
     curl -o "/home/$name/wallpapers/rocket.jpg" https://w.wallhaven.cc/full/8x/wallhaven-nzkozy.jpg >/dev/null 2>&1
-}
-
-nerdfont() {
-    # install 3270 Nerd Font --> u can choose another at: https://www.nerdfonts.com/font-downloads
-    rm -f "/home/$user/.fonts/3270*"  # delete prior installation
-    wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/3270.zip >/dev/null 2>&1 &&
-    unzip 3270.zip -d ~/.fonts >/dev/null 2>&1 &&
-    fc-cache -fv >/dev/null 2>&1 &&
-    rm 3270.zip
 }
 
 ### THE ACTUAL SCRIPT ###
@@ -154,10 +153,6 @@ sudo -u "$name" mkdir -p "/home/$name/.cache/zsh/"
 mkdir -p /home/$name/wallpapers/
 getwallpaper
 
-# Run the manual install files
-echo "Installing nerdfont, a font"
-nerdfont
-
 # Configuring the display manager
 echo "Configuring the display manager lightdm"
 sudo systemctl enable lightdm >/dev/null 2>&1
@@ -169,6 +164,9 @@ sudo npm install -g pyright >/dev/null 2>&1
 # Typescript
 sudo npm install -g typescript typescript-language-server >/dev/null 2>&1
 
+# Reload the font cache
+echo "Reloading the font cache"
+fc-cache -fv >/dev/null 2>&1
 
 # This line, overwriting the `newperms` command above will allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.

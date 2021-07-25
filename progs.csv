@@ -17,6 +17,7 @@
 ,man-db,"for listing the manual page"
 ,nautilus,"for editing beyond the scope of ranger"
 ,neovim,"a tidier vim with some useful features"
+U("https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Medium/complete/3270-Medium%20Nerd%20Font%20Complete%20Mono.ttf"&".fonts"),nerdfont,"is a font for symbols"
 ,network-manager-applet,"for wi-fi"
 ,networkmanager,"for wi-fi"
 ,nodejs,"for language servers"

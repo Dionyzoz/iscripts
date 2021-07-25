@@ -45,9 +45,9 @@ Then we are going to make partitions, we do this by using `fdisk`.
 To print the current "setup" use `fdisk -l`.
 To partition the disk, run `fdisk /dev/<DISK>`, where `<DISK>` is for example `sda` or `nvme0n1`.
 In this menu, use `p` to print the current partition table, now by using `n` for creating a new partition and `t` for changing the type, make the following partitions:
-1. *EFI system partition* of `+550M` (type `1`), the name of the EFI partition will be `<EFI>` from now on, e.g. `/dev/sda1`.
-2. Swap partition of `+(#RAM)` (type `19`), the name of the partition will be `<SWAP>` from now on, e.g. `/dev/sda2`.
-3. Root partition of the rest of the space (default size and type), the name of the partition will be `<ROOT>` from now on, e.g. `/dev/sda3`.
+1. *EFI system partition* of `+550M` (type `1`), the name of the EFI partition will be `<EFI>` from now on, e.g. `sda1`.
+2. Swap partition of `+(#RAM)` (type `19`), the name of the partition will be `<SWAP>` from now on, e.g. `sda2`.
+3. Root partition of the rest of the space (default size and type), the name of the partition will be `<ROOT>` from now on, e.g. `sda3`.
 ```bash
 # What I did for the EFI system partition (empty lines are returns)
 n
@@ -62,16 +62,16 @@ Then use `w` to write the changes of `p`.
 
 *Formatting the partitions:*
 ```bash
-mkfs.fat -F32 <EFI>
-mkfs.ext4 <ROOT>
-mkswap <SWAP>
-swapon <SWAP>
+mkfs.fat -F32 /dev/<EFI>
+mkfs.ext4 /dev/<ROOT>
+mkswap /dev/<SWAP>
+swapon /dev/<SWAP>
 ```
 *Mounting the partitions:*
 ```bash
-mount <ROOT> /mnt
+mount /dev/<ROOT> /mnt
 mkdir -p /mnt/boot
-mount <EFI> /mnt/boot
+mount /dev/<EFI> /mnt/boot
 ```
 
 Then, to install packages, run:
@@ -111,7 +111,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=GRUB
 When needing dual boot, mount the e.g. windows EFI system partition like so:
 ```bash
 mkdir -p /mnt2
-mount <WINDOWS EFI SYSTEM PARTITION> /mnt2
+mount /dev/<WINDOWS EFI SYSTEM PARTITION> /mnt2
 pacman -S os-prober
 os-prober
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
@@ -137,7 +137,7 @@ After doing this you can install everything by running the iscripts. You can fin
 4. following packages)         Do not install efibootmgr.
 5. configure grub)             instead, run
 ```bash
-grub-install --target=i386-pc <DISK>
+grub-install --target=i386-pc /dev/<DISK>
 ```
 
 ## Automated install
