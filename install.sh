@@ -76,7 +76,7 @@ aurinstall() {
     cd "/home/$name/installs"
     git clone "https://aur.archlinux.org/$1.git" >/dev/null 2>&1 &&
     cd "$1" &&
-    sudo makepkg --noconfirm -si >/dev/null 2>&1)
+    makepkg --noconfirm -si >/dev/null 2>&1)
 }
 
 progsinstallation() {
@@ -100,29 +100,17 @@ progsinstallation() {
     done < /tmp/progs.csv
 }
 
-putgitrepo() { # Downloads a gitrepo $1 and places the files in $2 only overwriting conflicts
-    echo "Installing dotfiles..."
-
-    # Create a temporary directory and the destination directory, and
-    # make sure they are owned by the current user.
-	dir=$(mktemp -d)
-    [ ! -d "$2" ] && mkdir -p "$2"
-    chown -R "$name":"$name" "$dir" "$2"
-
-	sudo -u "$name" git clone --recursive "$1" "$dir" >/dev/null 2>&1
-	sudo -u "$name" cp -rfT "$dir" "$2" >/dev/null 2>&1
-}
-
 getwallpaper() {
-    curl -o "/home/$name/wallpapers/mountain.jpg" https://w.wallhaven.cc/full/8x/wallhaven-8x782y.jpg
-    curl -o "/home/$name/wallpapers/rocket.jpg" https://w.wallhaven.cc/full/8x/wallhaven-nzkozy.jpg
+    curl -o "/home/$name/wallpapers/mountain.jpg" https://w.wallhaven.cc/full/8x/wallhaven-8x782y.jpg >/dev/null 2>&1
+    curl -o "/home/$name/wallpapers/rocket.jpg" https://w.wallhaven.cc/full/8x/wallhaven-nzkozy.jpg >/dev/null 2>&1
 }
 
 nerdfont() {
     # install 3270 Nerd Font --> u can choose another at: https://www.nerdfonts.com/font-downloads
-    wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/3270.zip >/dev/null 2>&1
-    unzip 3270.zip -d ~/.fonts >/dev/null 2>&1
-    fc-cache -fv >/dev/null 2>&1
+    rm -f "/home/$user/.fonts/3270*"  # delete prior installation
+    wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/3270.zip >/dev/null 2>&1 &&
+    unzip 3270.zip -d ~/.fonts >/dev/null 2>&1 &&
+    fc-cache -fv >/dev/null 2>&1 &&
     rm 3270.zip
 }
 
@@ -144,9 +132,9 @@ progsinstallation
 
 # Install the dotfiles in the user's home directory.
 echo "Installing dotfiles..."
-# putgitrepo "$dotfilesrepo" "/home/$name"
 # Setup a bare git repository to manage the dotfiles
 git clone --bare --config status.showUntrackedFiles=no "$dotfilesrepo" "/home/$name/.local/share/dotfiles"
+alias sudo='sudo '  # for the sudo dfg line below
 alias dfg="/usr/bin/git --git-dir=/home/$name/.local/share/dotfiles --work-tree=/home/$name"
 # Setup all the files.
 dfg checkout -f
@@ -172,7 +160,7 @@ nerdfont
 
 # Configuring the display manager
 echo "Configuring the display manager lightdm"
-sudo systemctl enable lightdm
+sudo systemctl enable lightdm >/dev/null 2>&1
 sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
 
 echo "Installing language servers"
@@ -187,3 +175,7 @@ sudo npm install -g typescript typescript-language-server >/dev/null 2>&1
 echo "Allowing the user to run important commands"
 newperms "%wheel ALL=(ALL) ALL #ISCRIPTS
 %wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/systemctl suspend,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/packer -Syu,/usr/bin/packer -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/rc-service NetworkManager restart,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/paru,/usr/bin/pacman -Syyuw --noconfirm"
+
+# Since we are in root now, permissions need to be rewritten
+echo "Changing permissions"
+chown -R "$name":wheel "/home/$name"
