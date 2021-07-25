@@ -82,8 +82,9 @@ aurinstall() {
 urlinstall() {
     url=$(echo "$3" | cut -d '"' -f 2)
     directory=$(echo "$3" | cut -d '"' -f 4)
-    wget "$url" -o "$directory/$1.zip" -c >/dev/null 2>&1 &&
-    unzip "$directory/$1.zip" >/dev/null 2>&1
+    mkdir -p "/home/$name/$directory"
+    wget "$url" -O "/home/$name/$directory/$1" -c >/dev/null 2>&1
+    unzip "/home/$name/$directory/$1" >/dev/null 2>&1
 }
 
 progsinstallation() {
@@ -106,11 +107,6 @@ progsinstallation() {
             *) maininstall "$program" "$comment" ;;
         esac
     done < /tmp/progs.csv
-}
-
-getwallpaper() {
-    curl -o "/home/$name/wallpapers/mountain.jpg" https://w.wallhaven.cc/full/8x/wallhaven-8x782y.jpg >/dev/null 2>&1
-    curl -o "/home/$name/wallpapers/rocket.jpg" https://w.wallhaven.cc/full/8x/wallhaven-nzkozy.jpg >/dev/null 2>&1
 }
 
 ### THE ACTUAL SCRIPT ###
@@ -148,10 +144,6 @@ dfg update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE
 # Make zsh the default shell for the user.
 sudo chsh -s /bin/zsh "$name" > /dev/null 2>&1
 sudo -u "$name" mkdir -p "/home/$name/.cache/zsh/"
-
-# Get the wallpaper so that i3 can set it up.
-mkdir -p /home/$name/wallpapers/
-getwallpaper
 
 # Configuring the display manager
 echo "Configuring the display manager lightdm"
