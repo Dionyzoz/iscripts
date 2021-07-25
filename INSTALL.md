@@ -24,9 +24,10 @@ station list devices
 station <DEVICE> get-networks
 station <DEVICE> connect <SSID>  # then enter the password of the network
 exit
+# The command iwctl station <DEVICE> connect <SSID> would also work
 ```
 
-This is the point where you can use a script to do the rest, if you want this, look at the "Automated install" section. In the "Manual install" section the installation is described further.
+This is the point where you can use a script to do the rest, if you want this, look at the [Automated install](/automated-install) section. In the "Manual install" section the installation is described further.
 
 
 ## Manual install
