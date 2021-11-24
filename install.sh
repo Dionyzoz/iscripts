@@ -77,7 +77,7 @@ aurinstall() {
         cd "/home/$name/installs"
         git clone "https://aur.archlinux.org/$1.git" >/dev/null 2>&1
         cd "$1"
-        makepkg --noconfirm -si >/dev/null 2>&1
+        sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1
     fi
 }
 
