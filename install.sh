@@ -137,17 +137,17 @@ git clone --bare --config status.showUntrackedFiles=no "$dotfilesrepo" "/home/$n
 
 # In the aliasrc the alias for dfg has been made, here it is a variable
 # so we can put sudo in front of it.
-dfg="/usr/bin/git --git-dir=/home/$name/.local/share/dotfiles --work-tree=/home/$name"
+alias dfg="/usr/bin/git --git-dir=/home/$name/.local/share/dotfiles --work-tree=/home/$name"
 # Setup all the files.
-$(echo "sudo $dfg checkout -f")
+dfg checkout -f
 # Initialize the submodules, which has to be done like this in order for
 # the bare repository to be able to manage them.
 chown -R "$name":wheel "/home/$name"  # there was some error with the permissions
-$(echo "sudo $dfg submodule update --init --recursive")
+dfg -C "/home/$name" submodule update --init --recursive
 # Delete files, but make git ignore the deletion. The files can simply
 # be restored with e.g. `dfg checkout README.md`.
 rm -f "/home/$name/README.md" "/home/$name/LICENSE"
-$(echo "sudo $dfg update-index --assume-unchanged /home/$name/README.md /home/$name/LICENSE")
+dfg update-index --assume-unchanged /home/$name/README.md /home/$name/LICENSE.MIT
 
 # Make zsh the default shell for the user.
 sudo chsh -s /bin/zsh "$name" > /dev/null 2>&1
