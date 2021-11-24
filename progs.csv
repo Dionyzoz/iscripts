@@ -1,56 +1,54 @@
-#TAG,NAME IN REPO (or git url),PURPOSE
-,alacritty,"is a fast, costumizable terminal"
-,bat,"is a cat clone with wings"
-,dialog,"for displaying messages in terminal"
-,dunst,"is a suckless notification system"
-,fd,"is a tool to search through filenames"
-,feh,"is a versatile image viewer"
-,fzf,"is a command-line fuzzy finder"
-,git,"is a free and open source distributed version cotrol system"
-,htop,"is a process viewer for Linux"
-,i3-gaps,"is a window manager with gaps"
-,i3lock,"for locking the screen"
-,inkscape,"for editing svg files"
-,jq,"dependency of monitor script"
-,lightdm,"is a display manager"
-,lightdm-webkit2-greeter,"is a display manager"
-,man-db,"for listing the manual page"
-U,mountain.jpg,"is a wallpaper""https://w.wallhaven.cc/full/8x/wallhaven-8x782y.jpg""wallpapers"
-,nautilus,"for editing beyond the scope of ranger"
-,neovim,"a tidier vim with some useful features"
-U,nerdfont.zip,"is a font for symbols""https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Medium/complete/3270-Medium%20Nerd%20Font%20Complete%20Mono.ttf"".fonts"
-,network-manager-applet,"for wi-fi"
-,networkmanager,"for wi-fi"
-,nodejs,"for language servers"
-,npm,"for language servers"
-,pari,"is a programming language designed for mathematics"
-,pdftex,"for writing and compiling with latex"
-,picom,"is a compositor"
-A,polybar,"is a fast and easy-to-use status bar"
-,primesieve,"is an extremely fast prime counter/generator"
-,pulseaudio-alsa,"is the audio system"
-,pulsemixer,"is an audio controller"
-,python-pygame,"is a dependency of the monitor script"
-,qutebrowser,"is a vim-based browser"
-,ranger,"is a VIM-inspired filemanager for the console"
-,redshift,"is a color temperature adjuster"
-,ripgrep,"is a faster and more intuitive replacement for grep"
-U,rocket.jpg,"is a wallpaper""https://w.wallhaven.cc/full/8x/wallhaven-nzkozy.jpg""wallpapers"
-,rofi,"is a program launcher"
-,sc-im,"is an Excel-like terminal spreadsheet manager"
-,texlive,"for writing and compiling with latex"
-,texlive-most,"for writing and compiling with latex"
-,tree,"is a recursive directory listing program"
-,ttf-font-awesome,"is a font, primarily for icons"
-,unzip,"unzips zips"
-,wget,"an non-interactive network downloader"
-,wireless_tools,"for wi-fi"
-,wpa_supplicant,"for wi-fi"
-,xclip,"is a command line interface to X selections (clipboard)"
-,xdotool,"is a dependency for the i3-layout-saving script"
-,xorg-server,"is the graphical server"
-,xorg-xinit,"starts the graphical server"
-,xorg-xrandr,"for managing (multiple) screens"
-,zathura,"is a costumizable pdf-viewer"
-,zathura-pdf-mupdf,"allows pdf compatibility in zathura"
-,zsh,"the Z shell"
+#TAG,NAME IN REPO (or git url),PURPOSE,url|dir|zip
+,alacritty,"is a fast, costumizable terminal",
+,bat,"is a cat clone with wings",
+,dialog,"for displaying messages in terminal",
+,dunst,"is a suckless notification system",
+,fd,"is a tool to search through filenames",
+,feh,"is a versatile image viewer",
+,fzf,"is a command-line fuzzy finder",
+,git,"is a free and open source distributed version cotrol system",
+,htop,"is a process viewer for Linux",
+,i3-gaps,"is a window manager with gaps",
+,i3lock,"for locking the screen",
+,inkscape,"for editing svg files",
+,jq,"dependency of monitor script",
+,man-db,"for listing the manual page",
+U,mountain.jpg,"is a wallpaper","https://w.wallhaven.cc/full/8x/wallhaven-8x782y.jpg|wallpapers|false"
+,nautilus,"for editing beyond the scope of ranger",
+,neovim,"a tidier vim with some useful features",
+U,nerdfont.zip,"is a font for symbols","https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/3270/Medium/complete/3270-Medium%20Nerd%20Font%20Complete%20Mono.ttf|.fonts|true"
+,network-manager-applet,"for wi-fi",
+,networkmanager,"for wi-fi",
+,nodejs,"for language servers",
+,npm,"for language servers",
+,pari,"is a programming language designed for mathematics",
+,pdftex,"for writing and compiling with latex",
+,picom,"is a compositor",
+A,polybar,"is a fast and easy-to-use status bar",
+,primesieve,"is an extremely fast prime counter/generator",
+,pulseaudio-alsa,"is the audio system",
+,pulsemixer,"is an audio controller",
+,python-pygame,"is a dependency of the monitor script",
+,qutebrowser,"is a vim-based browser",
+,ranger,"is a VIM-inspired filemanager for the console",
+,redshift,"is a color temperature adjuster",
+,ripgrep,"is a faster and more intuitive replacement for grep",
+U,rocket.jpg,"is a wallpaper","https://w.wallhaven.cc/full/8x/wallhaven-nzkozy.jpg|wallpapers|false"
+,rofi,"is a program launcher",
+,sc-im,"is an Excel-like terminal spreadsheet manager",
+,texlive,"for writing and compiling with latex",
+,texlive-most,"for writing and compiling with latex",
+,tree,"is a recursive directory listing program",
+,ttf-font-awesome,"is a font, primarily for icons",
+,unzip,"unzips zips",
+,wget,"an non-interactive network downloader",
+,wireless_tools,"for wi-fi",
+,wpa_supplicant,"for wi-fi",
+,xclip,"is a command line interface to X selections (clipboard)",
+,xdotool,"is a dependency for the i3-layout-saving script",
+,xorg-server,"is the graphical server",
+,xorg-xinit,"starts the graphical server",
+,xorg-xrandr,"for managing (multiple) screens",
+,zathura,"is a costumizable pdf-viewer",
+,zathura-pdf-mupdf,"allows pdf compatibility in zathura",
+,zsh,"the Z shell",

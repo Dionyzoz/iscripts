@@ -8,7 +8,7 @@ cat << EOF
 Optional arguments for custom use:
 
 -h      Display this message.
--a      Also install part of Arch Linux
+-a      Also install part of Arch Linux, currenty not an option
 
 EOF
 # Exit once we have printed the help message.
@@ -80,12 +80,15 @@ aurinstall() {
 }
 
 urlinstall() {
-    echo "Installing ($n of $total) \`$1\`, $(echo "$2" | cut -d'"' -f 1)."
-    url=$(echo "$2" | cut -d'"' -f 3)
-    directory=$(echo "$2" | cut -d'"' -f 4)
-    mkdir -p "/home/$name/$directory"
-    wget "$url" -O "/home/$name/$directory/$1" -c >/dev/null 2>&1
-    unzip "/home/$name/$directory/$1" >/dev/null 2>&1
+    echo "Installing ($n of $total) \`$1\`, $2."
+    url=$(echo "$3" | cut -d'|' -f 1)
+    dir=$(echo "$3" | cut -d'|' -f 2)
+    zip=$(echo "$3" | cut -d'|' -f 3)
+    mkdir -p "/home/$name/$dir"
+    wget "$url" -O "/home/$name/$dir/$1" -c >/dev/null 2>&1
+    if "$zip"; then
+        unzip "/home/$name/$dir/$1" >/dev/null 2>&1
+    fi
 }
 
 progsinstallation() {
@@ -95,15 +98,16 @@ progsinstallation() {
     total=$(wc -l < /tmp/progs.csv)
 
     # Use , as the delimeter.
-    while IFS=, read -r tag program comment; do
+    while IFS=, read -r tag program comment url; do
         # Indication of how many programs we have installed so far.
         n=$((n+1))
 
         # Remove the "" from the comment.
-        comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
+        comment="$(echo "$comment" | sed "s/\"//g")"
+        url="$(echo "$url" | sed "s/\"//g")"
 
         case "$tag" in
-            "U") urlinstall "$program" "$comment" ;;
+            "U") urlinstall "$program" "$comment" "$url" ;;
             "A") aurinstall "$program" "$comment" ;;
             *) maininstall "$program" "$comment" ;;
         esac
@@ -130,8 +134,10 @@ progsinstallation
 echo "Installing dotfiles..."
 # Setup a bare git repository to manage the dotfiles
 git clone --bare --config status.showUntrackedFiles=no "$dotfilesrepo" "/home/$name/.local/share/dotfiles"
-alias sudo='sudo '  # for the sudo dfg line below
-alias dfg="/usr/bin/git --git-dir=/home/$name/.local/share/dotfiles --work-tree=/home/$name"
+
+# In the aliasrc the alias for dfg has been made, here it is a variable
+# so we can put sudo in front of it.
+dfg="/usr/bin/git --git-dir=/home/$name/.local/share/dotfiles --work-tree=/home/$name"
 # Setup all the files.
 dfg checkout -f
 # Initialize the submodules, which has to be done like this in order for
@@ -146,11 +152,6 @@ dfg update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE
 # Make zsh the default shell for the user.
 sudo chsh -s /bin/zsh "$name" > /dev/null 2>&1
 sudo -u "$name" mkdir -p "/home/$name/.cache/zsh/"
-
-# Configuring the display manager
-echo "Configuring the display manager lightdm"
-sudo systemctl enable lightdm >/dev/null 2>&1
-sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
 
 echo "Installing language servers"
 # Python
