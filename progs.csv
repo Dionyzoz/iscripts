@@ -1,5 +1,5 @@
 #TAG,NAME IN REPO (or git url),PURPOSE,url|dir|zip
-,alacritty,"is a fast, costumizable terminal",
+,alacritty,"is a fast and costumizable terminal",
 ,bat,"is a cat clone with wings",
 ,dialog,"for displaying messages in terminal",
 ,dunst,"is a suckless notification system",
@@ -39,7 +39,7 @@ U,rocket.jpg,"is a wallpaper","https://w.wallhaven.cc/full/8x/wallhaven-nzkozy.j
 ,texlive,"for writing and compiling with latex",
 ,texlive-most,"for writing and compiling with latex",
 ,tree,"is a recursive directory listing program",
-,ttf-font-awesome,"is a font, primarily for icons",
+,ttf-font-awesome,"is a font primarily for icons",
 ,unzip,"unzips zips",
 ,wget,"an non-interactive network downloader",
 ,wireless_tools,"for wi-fi",
