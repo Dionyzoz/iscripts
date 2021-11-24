@@ -71,12 +71,14 @@ maininstall() {
 }
 
 aurinstall() {
-	[ -f "/usr/bin/$1" ] || (echo "Installing ($n of $total) \`$1\` from the AUR, $2."
-    mkdir -p "/home/$name/installs"
-    cd "/home/$name/installs"
-    git clone "https://aur.archlinux.org/$1.git" >/dev/null 2>&1 &&
-    cd "$1" &&
-    makepkg --noconfirm -si >/dev/null 2>&1)
+    if [ -f "/usr/bin/$1" ]; then
+        echo "Installing ($n of $total) \`$1\` from the AUR, $2."
+        mkdir -p "/home/$name/installs"
+        cd "/home/$name/installs"
+        git clone "https://aur.archlinux.org/$1.git" >/dev/null 2>&1
+        cd "$1"
+        makepkg --noconfirm -si >/dev/null 2>&1
+    fi
 }
 
 urlinstall() {
