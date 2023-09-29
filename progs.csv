@@ -1,6 +1,7 @@
 #TAG,NAME IN REPO (or git url),PURPOSE,url|dir|zip
 ,alacritty,"is a fast and costumizable terminal",
 ,dialog,"for displaying messages in terminal",
+,dmenu,"is a minimal program launcher",
 ,dunst,"is a suckless notification system",
 ,fd,"is a tool to search through filenames",
 ,feh,"is a versatile image viewer",
@@ -20,7 +21,6 @@
 ,picom,"is a compositor",
 ,primesieve,"is an extremely fast prime counter/generator",
 ,pulseaudio-alsa,"is the audio system",
-,qutebrowser,"is a vim-based browser",
 ,redshift,"is a color temperature adjuster",
 ,ripgrep,"is a faster and more intuitive replacement for grep",
 ,texlive-most,"for writing and compiling with latex",
