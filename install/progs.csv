@@ -1,0 +1,13 @@
+#TAG,NAME,PURPOSE
+,fd,"is a tool to search through filenames"
+,fzf,"is a command-line fuzzy finder"
+,git,"is a free and open source distributed version cotrol system"
+,htop,"is a process viewer for Linux"
+,man-db,"for listing the manual page"
+,neovim,"a tidier vim with some useful features"
+,ripgrep,"is a faster and more intuitive replacement for grep"
+,tree,"is a recursive directory listing program"
+,unzip,"unzips zips"
+,wget,"an non-interactive network downloader"
+,zsh,"the Z shell"
+,python3-venv,"is a virtual Python environment builder."

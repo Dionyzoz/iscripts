@@ -1,0 +1,16 @@
+#TAG,NAME,PURPOSE
+,alacritty,"is a fast and costumizable terminal"
+,dmenu,"is a minimal program launcher"
+,feh,"is a versatile image viewer"
+,i3,"window manager"
+,nautilus,"for editing beyond the scope of ranger"
+,network-manager-applet,"for wi-fi"
+,networkmanager,"for wi-fi"
+,pulseaudio-alsa,"is the audio system"
+,wireless_tools,"for wi-fi"
+,wpa_supplicant,"for wi-fi"
+,xclip,"is a command line interface to X selections (clipboard)"
+,xdotool,"is a dependency for the i3-layout-saving script",
+,xorg-server,"is the graphical server"
+,xorg-xinit,"starts the graphical server"
+,xorg-xrandr,"for managing (multiple) screens"

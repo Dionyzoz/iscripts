@@ -8,21 +8,27 @@ cat << EOF
 Optional arguments for custom use:
 
 -h      Display this message.
--a      Also install part of Arch Linux, currenty not an option
+-w      Install programs for window manager environment (e.g. on Servers or WSL).
+-l      Install LSPs.
 
 EOF
 # Exit once we have printed the help message.
 exit 1
 }
 
-while getopts ":hp:l" opt; do case $opt in
+while getopts ":hwl" opt; do case $opt in
         h) printhelp ;;
-        a) arch=true ;;
+        w) wm=1 ;;
+        l) lsp=1 ;;
         *) printf "Invalid option: -%s\\n" "$OPTARG" && exit 1 ;;
 esac done
 
-progsfile="progs.csv"
-dotfilesrepo="https://github.com/jorisperrenet/dotfiles.git"
+progsfile="install/progs.csv"
+wm_progsfile="install/wm_progs.csv"
+lspsfile="install/lsps.csv"
+
+httpsdotfilesrepo="https://github.com/Dionyzoz/dotfiles.git"
+sshdotfilesrepo="git@github.com:Dionyzoz/dotfiles.git"
 
 ### FUNCTIONS ###
 
@@ -63,22 +69,14 @@ newperms() { # Set special sudoers settings for install (or after).
 	echo "$* #ISCRIPTS" >> /etc/sudoers
 }
 
-installpkg() { pacman --noconfirm --needed -S "$1" > /dev/null 2>&1 ;}
-
 maininstall() {
     echo "Installing ($n of $total) \`$1\`, $2."
-    installpkg "$1"
+    pacman --noconfirm --needed -S "$1" > /dev/null 2>&1 ;
 }
 
 aurinstall() {
-    if ! [ -f "/usr/bin/$1" ]; then
-        echo "Installing ($n of $total) \`$1\` from the AUR, $2."
-        sudo -u "$name" mkdir -p "/home/$name/installs"
-        cd "/home/$name/installs"
-        sudo -u "$name" git clone "https://aur.archlinux.org/$1.git" >/dev/null 2>&1
-        cd "$1"
-        sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1
-    fi
+    echo "Installing ($n of $total) \`$1\` from the AUR, $2."
+    /usr/bin/yay --noconfirm --needed -S "$1" > /dev/null 2>&1 ;
 }
 
 urlinstall() {
@@ -93,27 +91,36 @@ urlinstall() {
     fi
 }
 
-progsinstallation() {
-    # Get the progsfile and delete the header.
-    [ -f "$progsfile" ] && cat "$progsfile" | sed '/^#/d' > /tmp/progs.csv
+install_list() {
+    # Get the list of programs to install and delete the header.
+    [ -f "$1" ] && cat "$1" | sed '/^#/d' > /tmp/install_list.csv
 
     total=$(wc -l < /tmp/progs.csv)
 
     # Use , as the delimeter.
-    while IFS=, read -r tag program comment url; do
+    while IFS=, read -r tag program comment; do
         # Indication of how many programs we have installed so far.
         n=$((n+1))
 
-        # Remove the "" from the comment.
         comment="$(echo "$comment" | sed "s/\"//g")"
-        url="$(echo "$url" | sed "s/\"//g")"
+        # url="$(echo "$url" | sed "s/\"//g")"
 
         case "$tag" in
-            "U") urlinstall "$program" "$comment" "$url" ;;
+            # "U") urlinstall "$program" "$comment" "$url" ;;
             "A") aurinstall "$program" "$comment" ;;
             *) maininstall "$program" "$comment" ;;
         esac
-    done < /tmp/progs.csv
+    done < /tmp/install_list.csv
+}
+
+install_yay() {
+    pacman --noconfirm --needed -S base-devel > /dev/null 2>&1 ;
+    cd "/tmp"
+    sudo -u "$name" mkdir -p "/home/$name/installs"
+    sudo -u "$name" git clone "https://aur.archlinux.org/yay-bin.git" >/dev/null 2>&1
+    cd "yay-bin"
+    sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1
+    echo "Yay installed for downloading packages from the AUR"
 }
 
 ### THE ACTUAL SCRIPT ###
@@ -128,9 +135,23 @@ adduserandpass || error "Error adding username and/or password."
 # in a fakeroot environment, this is required for all builds with AUR.
 newperms "%wheel ALL=(ALL) NOPASSWD: ALL"
 
-
 # Install the programs from the progsfile.
-progsinstallation
+
+echo "Installing base progs"
+install_list "$progsfile"
+echo "---------------------------\n"
+
+if [[ -v lsp ]] then 
+    echo "Installing LSPs"
+    install_list "$lspsfile";
+    echo "---------------------------\n"
+fi
+
+if [[ -v wm ]] then 
+    echo "Installing programs for window manager environment"
+    install_list "$wm_progsfile";
+    echo "---------------------------\n"
+fi
 
 # Install the dotfiles in the user's home directory.
 echo "Installing dotfiles..."
@@ -148,18 +169,12 @@ chown -R "$name":wheel "/home/$name"  # there was some error with the permission
 dfg -C "/home/$name" submodule update --init --recursive
 # Delete files, but make git ignore the deletion. The files can simply
 # be restored with e.g. `dfg checkout README.md`.
-rm -f "/home/$name/README.md" "/home/$name/LICENSE"
-dfg update-index --assume-unchanged /home/$name/README.md /home/$name/LICENSE.MIT
+rm -f "/home/$name/README.md"
+dfg update-index --assume-unchanged /home/$name/README.md 
 
 # Make zsh the default shell for the user.
 sudo chsh -s /bin/zsh "$name" > /dev/null 2>&1
 sudo -u "$name" mkdir -p "/home/$name/.cache/zsh/"
-
-echo "Installing language servers"
-# Python
-sudo npm install -g pyright >/dev/null 2>&1
-# Typescript
-sudo npm install -g typescript typescript-language-server >/dev/null 2>&1
 
 # Reload the font cache
 echo "Reloading the font cache"
