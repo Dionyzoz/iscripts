@@ -156,7 +156,7 @@ fi
 # Install the dotfiles in the user's home directory.
 echo "Installing dotfiles..."
 # Setup a bare git repository to manage the dotfiles
-git clone --bare --config status.showUntrackedFiles=no "$dotfilesrepo" "/home/$name/.local/share/dotfiles"
+git clone --bare --config status.showUntrackedFiles=no "$httpsdotfilesrepo" "/home/$name/.local/share/dotfiles"
 
 # In the aliasrc the alias for dfg has been made, here it is a variable
 # so we can put sudo in front of it.
