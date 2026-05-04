@@ -8,7 +8,7 @@ cat << EOF
 Optional arguments for custom use:
 
 -h      Display this message.
--w      Install programs for window manager environment (e.g. on Servers or WSL).
+-w      Install programs for window manager environment (e.g. not on Servers or WSL).
 -l      Install LSPs.
 
 EOF
